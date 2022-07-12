@@ -1,9 +1,13 @@
 ﻿using BBSuperMart.Data;
 using BBSuperMart.Models;
+using BBSuperMart.Models.ViewModels;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,10 +16,11 @@ namespace BBSuperMart.Controllers
     public class ProductsController : Controller
     {
         private readonly BBSuperMarketDbContext _pdB;
-
-        public ProductsController(BBSuperMarketDbContext pB)
+        private readonly IWebHostEnvironment _WebHostEnvironment;
+        public ProductsController(BBSuperMarketDbContext pB, IWebHostEnvironment WebHostEnvironment)
         {
             _pdB = pB;
+            _WebHostEnvironment = WebHostEnvironment;
         }
 
         public IActionResult Index()
@@ -27,64 +32,101 @@ namespace BBSuperMart.Controllers
             }
             return View(ObjList);
         }
-        //GET - Create
-        public IActionResult Create(int?productId)
+        //GET - Upsert
+        public IActionResult Upsert(int?productId)
         {
-            IEnumerable<SelectListItem> CategoryDropDown = _pdB.Category.Select(i => new SelectListItem
+            ProductsVM productsVM = new ProductsVM()
+            {
+                Products=new Products(),
+                CategorySelectList = _pdB.Category.Select(i => new SelectListItem
+                {
+                    Text = i.CatName,
+                    Value = i.CatId.ToString()
+                })
+
+            };
+            if (productId == null)
+            {
+                return View(productsVM);
+            }
+
+            else
+            {
+                productsVM.Products = _pdB.Products.Find(productId);
+                if (productsVM.Products == null) {
+                    return NotFound();
+                }
+                return View(productsVM);
+            }
+            
+        }
+
+
+        //POST - Upsert
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public IActionResult Upsert(ProductsVM productsVM)
+        {
+
+           
+            if (ModelState.IsValid)
+            {
+                var files = HttpContext.Request.Form.Files;
+                string webRootPath = _WebHostEnvironment.WebRootPath;
+
+                if (productsVM.Products.ProductId==0)
+                {
+                    //creating
+                    string upload = webRootPath + WC.ImagePath;
+                    string fileName = Guid.NewGuid().ToString();
+                    string extension = Path.GetExtension(files[0].FileName);
+
+                    using (var fileStream =new FileStream(Path.Combine(upload,fileName+extension),FileMode.Create))
+                    {
+                        files[0].CopyTo(fileStream);
+                    }
+                    productsVM.Products.image = fileName + extension;
+                    _pdB.Products.Add(productsVM.Products);
+                    
+                   }
+                else
+                {
+                    //updating
+                   var objFromDb = _pdB.Products.AsNoTracking().FirstOrDefault(u => u.ProductId == productsVM.Products.ProductId);
+                    if (files.Count > 0)
+                    {
+                        string upload = webRootPath + WC.ImagePath;
+                        string fileName = Guid.NewGuid().ToString();
+                        string extension = Path.GetExtension(files[0].FileName);
+
+                        var oldFile = Path.Combine(upload, objFromDb.image);
+
+                        if (System.IO.File.Exists(oldFile))
+                        {
+                            System.IO.File.Delete(oldFile);
+                        }
+                        using (var fileStream = new FileStream(Path.Combine(upload, fileName + extension), FileMode.Create))
+                        {
+                            files[0].CopyTo(fileStream);
+                        }
+                        productsVM.Products.image = fileName + extension;
+                    }
+                    else
+                    {
+                        productsVM.Products.image = objFromDb.image;
+                    }
+
+                    _pdB.Products.Update(productsVM.Products);
+                }
+                _pdB.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            productsVM.CategorySelectList = _pdB.Category.Select(i => new SelectListItem
             {
                 Text = i.CatName,
                 Value = i.CatId.ToString()
             });
-            ViewBag.CategoryDropDown = CategoryDropDown;
-            return View();
-        }
-        //POST - Create
-        [HttpPost]
-        [AutoValidateAntiforgeryToken]
-        public IActionResult Create(Products obj)
-        {
-            
-            if (ModelState.IsValid)
-            {
-                _pdB.Products.Add(obj);
-                _pdB.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(obj);
-        }
-
-        //GET - Edit
-        public IActionResult Edit(int?ProductId)
-        {
-            IEnumerable<SelectListItem> CategoryDropDown = _pdB.Category.Select(i => new SelectListItem
-            {
-                Text = i.CatName,
-                Value = i.CatId.ToString()
-            }) ;
-            ViewBag.CategoryDropDown = CategoryDropDown;
-            if (ProductId == null || ProductId == 0)
-            {
-                return NotFound();
-            }
-            var obj = _pdB.Products.Find(ProductId);
-            if (obj == null)
-            {
-                return NotFound();
-            }
-            return View(obj);
-        }
-        //POST - EDIT
-        [HttpPost]
-        [AutoValidateAntiforgeryToken]
-        public IActionResult Edit(Products obj)
-        {
-            if (ModelState.IsValid)
-            {
-                _pdB.Products.Update(obj);
-                _pdB.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(obj);
+            return View(productsVM);
         }
 
 
@@ -95,12 +137,12 @@ namespace BBSuperMart.Controllers
             {
                 return NotFound();
             }
-            var obj = _pdB.Products.Find(ProductId);
-            if (obj == null)
+            Products products = _pdB.Products.Include(u=>u.Category).FirstOrDefault(u=>u.ProductId==ProductId);
+            if (products == null)
             {
                 return NotFound();
             }
-            return View(obj);
+            return View(products);
         }
         //POST - Delete
         [HttpPost]
@@ -114,6 +156,12 @@ namespace BBSuperMart.Controllers
             var obj = _pdB.Products.Find(productId);
             if (obj!=null)
             {
+                string upload = _WebHostEnvironment.WebRootPath + WC.ImagePath;
+                var oldFile = Path.Combine(upload, obj.image);
+                if (System.IO.File.Exists(oldFile))
+                {
+                    System.IO.File.Delete(oldFile);
+                }
                 _pdB.Products.Remove(obj);
                 _pdB.SaveChanges();
                 return RedirectToAction("Index");

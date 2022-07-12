@@ -2,7 +2,7 @@
 <div class="pt-3">
     <div class="container row">
         <div class="col-6"><h2 class="text-secondary">Category List</h2> </div>
-        <div class="col-6 text-right"><a class="btn btn-outline-info" asp-controller="Products" asp-action="Create"><i class="fa-solid fa-square-plus"></i> Category</a></div>
+        <div class="col-6 text-right"><a class="btn btn-outline-info" asp-action="Upsert"><i class="fa-solid fa-square-plus"></i> Products</a></div>
     </div>
     <br />
 
@@ -57,8 +57,8 @@
                     <div class="text-center pb-2"> <strong class="card-text">Wishlist:<span class="font-weight-normal pl-2">@obj.addToWishlist</span></strong></div>
                     <hr />
                     <div class="w-75 btn-group ml-5 pr-4 text-center" role="group">
-                        <a class="btn btn-outline-success mx-2" asp-controller="Products" asp-route-ProductId="@obj.ProductId" asp-action="Edit"><i class="fa-solid fa-user-pen"></i></a>
-                        <a class="btn btn-outline-danger mx-2" asp-controller="Products" asp-route-ProductId="@obj.ProductId" asp-action="Delete"><i class="fa-solid fa-trash"></i></a>
+                        <a class="btn btn-outline-success mx-2"  asp-route-ProductId="@obj.ProductId" asp-action="Upsert"><i class="fa-solid fa-user-pen"></i></a>
+                        <a class="btn btn-outline-danger mx-2"  asp-route-ProductId="@obj.ProductId" asp-action="Delete"><i class="fa-solid fa-trash"></i></a>
                     </div>
                 </div> 
             </div>
