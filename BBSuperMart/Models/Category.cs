@@ -11,11 +11,15 @@ namespace BBSuperMart.Models
     {
         [Key]
         public int CatId { get; set; }
+
         [Required]
         public string CatName { get; set; }
+
         [Required]
         [DisplayName("Display Order")]
         [Range(1,int.MaxValue,ErrorMessage ="Number should be more than 0")]
         public int DisplayOrder { get; set; }
+
+        public string CatImageIcon { get; set; }
     }
 }

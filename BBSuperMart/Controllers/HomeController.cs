@@ -1,5 +1,8 @@
-﻿using BBSuperMart.Models;
+﻿using BBSuperMart.Data;
+using BBSuperMart.Models;
+using BBSuperMart.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -12,15 +15,21 @@ namespace BBSuperMart.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly BBSuperMarketDbContext _hdb;
+        public HomeController(ILogger<HomeController> logger, BBSuperMarketDbContext hdb)
         {
             _logger = logger;
+            _hdb = hdb;
         }
 
         public IActionResult Index()
         {
-            return View();
+            HomeVM homeVM = new HomeVM()
+            {
+                Products = _hdb.Products.Include(u => u.Category),
+                Categories = _hdb.Category
+            };
+            return View(homeVM);
         }
 
         public IActionResult Privacy()
@@ -32,6 +41,16 @@ namespace BBSuperMart.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public IActionResult details(int ProductId)
+        {
+            DetailsVM detailsVM= new DetailsVM()
+            {
+                Products = _hdb.Products.Include(u => u.Category).Where(u => u.ProductId == ProductId).FirstOrDefault(),
+                ExistsInCart = false
+            }; 
+            return View(detailsVM);
         }
     }
 }

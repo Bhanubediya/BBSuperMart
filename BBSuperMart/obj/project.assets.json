@@ -7249,25 +7249,25 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Bhanu15599\\.nuget\\packages\\": {},
+    "C:\\Users\\Bhanu\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
     "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Bhanu15599\\source\\repos\\BBSuperMart\\BBSuperMart\\BBSuperMart.csproj",
+      "projectUniqueName": "C:\\Users\\Bhanu\\Source\\Repos\\BBSuperMart\\BBSuperMart\\BBSuperMart.csproj",
       "projectName": "BBSuperMart",
-      "projectPath": "C:\\Users\\Bhanu15599\\source\\repos\\BBSuperMart\\BBSuperMart\\BBSuperMart.csproj",
-      "packagesPath": "C:\\Users\\Bhanu15599\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Bhanu15599\\source\\repos\\BBSuperMart\\BBSuperMart\\obj\\",
+      "projectPath": "C:\\Users\\Bhanu\\Source\\Repos\\BBSuperMart\\BBSuperMart\\BBSuperMart.csproj",
+      "packagesPath": "C:\\Users\\Bhanu\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Bhanu\\Source\\Repos\\BBSuperMart\\BBSuperMart\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
         "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
       ],
       "configFilePaths": [
-        "C:\\Users\\Bhanu15599\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Bhanu\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
@@ -7336,7 +7336,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.408\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.410\\RuntimeIdentifierGraph.json"
       }
     }
   }

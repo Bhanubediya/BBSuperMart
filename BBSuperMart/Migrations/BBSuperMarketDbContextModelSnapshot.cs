@@ -25,6 +25,9 @@ namespace BBSuperMart.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("CatImageIcon")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("CatName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -51,7 +54,6 @@ namespace BBSuperMart.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("image")
@@ -60,6 +62,10 @@ namespace BBSuperMart.Migrations
 
                     b.Property<double>("price")
                         .HasColumnType("float");
+
+                    b.Property<string>("quan_grams")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("quantity")
                         .HasColumnType("int");

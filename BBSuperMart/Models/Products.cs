@@ -28,6 +28,8 @@ namespace BBSuperMart.Models
         public int quantity { get; set; }
         [Required]
         [DisplayName("Description")]
+
+        public string quan_grams { get; set; }
         public string description { get; set; }
         [Required]
         [DisplayName("WishList")]
