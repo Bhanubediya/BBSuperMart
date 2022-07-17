@@ -3,14 +3,16 @@ using BBSuperMart.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BBSuperMart.Migrations
 {
     [DbContext(typeof(BBSuperMarketDbContext))]
-    partial class BBSuperMarketDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220715075913_detailImageToDb")]
+    partial class detailImageToDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,9 +54,6 @@ namespace BBSuperMart.Migrations
 
                     b.Property<string>("DetailImages")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DetailImages1")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("addToWishlist")

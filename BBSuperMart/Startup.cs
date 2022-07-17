@@ -29,6 +29,14 @@ namespace BBSuperMart
             options.UseSqlServer(
                 Configuration.GetConnectionString("defaultConnection")
                 ));
+            services.AddHttpContextAccessor();
+            services.AddSession(Options =>
+            {
+                Options.IdleTimeout = TimeSpan.FromMinutes(10);
+                Options.Cookie.HttpOnly = true;
+                Options.Cookie.IsEssential = true;
+            }
+            );
             services.AddControllersWithViews();
             services.AddRazorPages().AddRazorRuntimeCompilation();
         }
@@ -52,7 +60,7 @@ namespace BBSuperMart
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseSession();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

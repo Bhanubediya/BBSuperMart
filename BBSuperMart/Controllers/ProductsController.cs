@@ -71,50 +71,50 @@ namespace BBSuperMart.Controllers
            
             if (ModelState.IsValid)
             {
-                var files = HttpContext.Request.Form.Files;
-                string webRootPath = _WebHostEnvironment.WebRootPath;
+                //var files = HttpContext.Request.Form.Files;
+                //string webRootPath = _WebHostEnvironment.WebRootPath;
 
                 if (productsVM.Products.ProductId==0)
                 {
                     //creating
-                    string upload = webRootPath + WC.ImagePath;
-                    string fileName = Guid.NewGuid().ToString();
-                    string extension = Path.GetExtension(files[0].FileName);
+                    //string upload = webRootPath + WC.ImagePath;
+                    //string fileName = Guid.NewGuid().ToString();
+                    //string extension = Path.GetExtension(files[0].FileName);
 
-                    using (var fileStream =new FileStream(Path.Combine(upload,fileName+extension),FileMode.Create))
-                    {
-                        files[0].CopyTo(fileStream);
-                    }
-                    productsVM.Products.image = fileName + extension;
+                    //using (var fileStream =new FileStream(Path.Combine(upload,fileName+extension),FileMode.Create))
+                    //{
+                    //    files[0].CopyTo(fileStream);
+                    //}
+                    //productsVM.Products.image = fileName + extension;
                     _pdB.Products.Add(productsVM.Products);
-                    
-                   }
+                   
+                }
                 else
                 {
                     //updating
-                   var objFromDb = _pdB.Products.AsNoTracking().FirstOrDefault(u => u.ProductId == productsVM.Products.ProductId);
-                    if (files.Count > 0)
-                    {
-                        string upload = webRootPath + WC.ImagePath;
-                        string fileName = Guid.NewGuid().ToString();
-                        string extension = Path.GetExtension(files[0].FileName);
+                   //var objFromDb = _pdB.Products.AsNoTracking().FirstOrDefault(u => u.ProductId == productsVM.Products.ProductId);
+                    //if (files.Count > 0)
+                    //{
+                    //    string upload = webRootPath + WC.ImagePath;
+                    //    string fileName = Guid.NewGuid().ToString();
+                    //    string extension = Path.GetExtension(files[0].FileName);
 
-                        var oldFile = Path.Combine(upload, objFromDb.image);
+                    //    var oldFile = Path.Combine(upload, objFromDb.image);
 
-                        if (System.IO.File.Exists(oldFile))
-                        {
-                            System.IO.File.Delete(oldFile);
-                        }
-                        using (var fileStream = new FileStream(Path.Combine(upload, fileName + extension), FileMode.Create))
-                        {
-                            files[0].CopyTo(fileStream);
-                        }
-                        productsVM.Products.image = fileName + extension;
-                    }
-                    else
-                    {
-                        productsVM.Products.image = objFromDb.image;
-                    }
+                    //    if (System.IO.File.Exists(oldFile))
+                    //    {
+                    //        System.IO.File.Delete(oldFile);
+                    //    }
+                    //    using (var fileStream = new FileStream(Path.Combine(upload, fileName + extension), FileMode.Create))
+                    //    {
+                    //        files[0].CopyTo(fileStream);
+                    //    }
+                    //    productsVM.Products.image = fileName + extension;
+                    //}
+                    //else
+                    //{
+                    //    productsVM.Products.image = objFromDb.image;
+                    //}
 
                     _pdB.Products.Update(productsVM.Products);
                 }

@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using BBSuperMart.Utility
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -24,8 +27,8 @@
                         </li>
 
                         @*<li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Searchbar</a>
-                            </li>*@
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Searchbar</a>
+                </li>*@
                     </ul>
                     <div class="input-group md-form form-sm form-1 pl-0">
                         <input class="form-control" style="border-block-color:greenyellow" type="text" placeholder="Search products here.." aria-label="Search">
@@ -41,9 +44,21 @@
                 </div>
                 @* Collapse end *@
                 <!-- Below code is for User UI only-->
-                @*<div class="heart"><i class="fa-solid fa-heart fa-2x"></i></div>
-                    <div class="cart"><i class="fa-solid fa-bag-shopping fa-2x "></i></div>*@
-
+                @*<div class="heart"><i class="fa-solid fa-heart fa-2x"></i></div>*@
+                @if (HttpContextAccessor.HttpContext.Session.Get<List<ShoppingCart>>(WC.SessionCart)!=null) {
+            <a asp-controller="Cart" asp-action="Index" class="nav-link">
+                @{ 
+                    var count = HttpContextAccessor.HttpContext.Session.Get<List<ShoppingCart>>(WC.SessionCart).Count;
+                }
+                <div class="cart d-inline-flex"><i class="fa-solid fa-bag-shopping fa-2x "></i>&nbsp;<span class="pt-2">@count</span></div>
+            </a>
+                }
+            else
+            {
+            <a href="#" class="nav-link">
+                <div class="cart d-inline-flex"><i class="fa-solid fa-bag-shopping fa-2x "></i>&nbsp;<span class="pt-2">0</span></div>
+            </a>
+            }
                 <!--Admin UI-->
                 <ul class="navbar-nav mr-auto pl-2">
                     <li class="nav-item dropdown">
@@ -54,7 +69,7 @@
                             <a class="nav-link text-warning" asp-area="" asp-controller="Category" asp-action="Index">Category</a>
                             <a class="nav-link text-warning" asp-area="" asp-controller="Products" asp-action="Index">Products</a>
                             @*<div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">Something else here</a>*@
+                    <a class="dropdown-item" href="#">Something else here</a>*@
                         </div>
                     </li>
                 </ul>
