@@ -2,6 +2,7 @@ using BBSuperMart.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,6 +30,10 @@ namespace BBSuperMart
             options.UseSqlServer(
                 Configuration.GetConnectionString("defaultConnection")
                 ));
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddDefaultTokenProviders().AddDefaultUI()
+                .AddEntityFrameworkStores<BBSuperMarketDbContext>();
+            services.AddDistributedMemoryCache();
             services.AddHttpContextAccessor();
             services.AddSession(Options =>
             {
@@ -58,11 +63,12 @@ namespace BBSuperMart
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseSession();
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapRazorPages();
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

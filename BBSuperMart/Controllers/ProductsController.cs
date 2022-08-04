@@ -1,6 +1,8 @@
-﻿using BBSuperMart.Data;
+﻿using BBMartUtility;
+using BBSuperMart.Data;
 using BBSuperMart.Models;
 using BBSuperMart.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -13,6 +15,7 @@ using System.Threading.Tasks;
 
 namespace BBSuperMart.Controllers
 {
+    [Authorize(Roles= WC.CustomerRole)]
     public class ProductsController : Controller
     {
         private readonly BBSuperMarketDbContext _pdB;

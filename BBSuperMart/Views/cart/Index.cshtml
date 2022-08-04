@@ -1,0 +1,146 @@
+﻿@model IEnumerable<Products>
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using BBMartUtility
+
+@if (Model.Count() > 0)
+{
+    <form method="post">
+        <section class="h-100 h-custom " style="background-color: #eee;">
+
+            <div class="container py-5 h-100">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body p-4">
+
+                                <div class="row">
+
+                                    <div class="col-lg-12 col-md-8 col-sm-6">
+                                        <h5 class="mb-3">
+                                            <a asp-controller="Home" asp-action="Index" class="text-warning">
+                                                <i class="fas fa-long-arrow-alt-left me-2"></i>Continue shopping
+                                            </a>
+                                        </h5>
+                                        <hr>
+
+                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                            <div>
+                                                <p class="mb-1">Shopping cart</p>
+
+                                            </div>
+                                            @{
+                                                var count = HttpContextAccessor.HttpContext.Session.Get<List<ShoppingCart>>(WC.SessionCart).Count;
+                                            }
+                                            <p class="mb-0">You have<strong class="text-secondary"> @count </strong>  items in your cart</p>
+                                        </div>
+                                        @foreach (var obj in Model)
+                                        {
+
+                                            <div class="card mb-3 " style="border-radius: 0.6em; background: rgba(178, 239, 165, 1.0); background: -webkit-linear-gradient(top left, rgba(178, 239, 165, 1.0), rgba(174, 242, 192, 1.0)); background: -moz-linear-gradient(top left, rgba(178, 239, 165, 1.0), rgba(174, 242, 192, 1.0)); background: linear-gradient(to bottom right, rgba(178, 239, 165, 1.0), rgba(174, 242, 192, 1.0)); ">
+                                                <div class="card-body">
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="d-flex flex-row align-items-center">
+                                                            <div>
+                                                                <img src="@obj.DetailImages"
+                                                                     class="img-fluid rounded-3 " alt="Shopping item" style="width: 9em;border-radius:1em;">
+                                                            </div>
+
+                                                            <div class="ms-3 pl-4 pt-3 ">
+                                                                <h5>@obj.title</h5>
+
+                                                                <a class="small mb-0 text-decoration-none  " asp-controller="cart" asp-action="removeCart" asp-route-ProductId="@obj.ProductId"><span class="text-white"> | </span><span class="text-danger">Remove</span></a>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="d-flex flex-row align-items-center">
+                                                            <div style="width: 15em;">
+                                                                <h5 class="fw-normal text-black-50 mb-0">@obj.quan_grams</h5>
+                                                            </div>
+                                                            <div style="width: 17em;">
+                                                                <div class="d-inline-flex">
+                                                                    <div class="text-center text-secondary pr-4 "><a asp-route-ProductId="@obj.ProductId" asp-route-quantity="@obj.quantity" asp-controller="cart" asp-action="increase"><i class="fa-solid fa-square-plus fa-2x" id="plus" style="cursor: pointer"></i></a></div>
+                                                                    <p>@obj.quantity</p>
+                                                                    <div class="text-center pl-4 text-secondary"><a asp-route-ProductId="@obj.ProductId"  asp-route-quantity="@obj.quantity" asp-controller="cart" asp-action="decrease"><i class="fa-solid fa-square-minus fa-2x" id="minus" style="cursor: pointer"></i></a></div>
+                                                                </div>
+                                                            </div>
+                                                            <div style="width: 10em;">
+                                                                <h5 class="mb-0"><strong>₹</strong>@obj.price</h5>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </form>
+}
+else
+{
+<div class="container text-center border box-shadow h-100 pb-5 pt-5">
+    <p>Oop's! no products added.</p>
+    <div>
+        <a asp-controller="Home" asp-action="Index">
+            <button class="btn btn-warning text-white">Shop now</button>
+        </a>
+    </div>
+</div>
+}
+
+<style>
+    #plus:hover {
+        color: darkorange;
+    }
+
+    #minus:hover {
+        color: orangered;
+    }
+</style>
+<!--
+<div class="col-lg-12 ">
+
+    <div class="card  text-white rounded-3 w-50 " style="/* Created with https://www.css-gradient.com */ background: rgba(132, 132, 132, 1.0); background: -webkit-linear-gradient(top left, rgba(132, 132, 132, 1.0), rgba(103, 102, 102, 1.0)); background: -moz-linear-gradient(top left, rgba(132, 132, 132, 1.0), rgba(103, 102, 102, 1.0)); background: linear-gradient(to bottom right, rgba(132, 132, 132, 1.0), rgba(103, 102, 102, 1.0)); ">
+
+
+        <hr class="my-3">
+
+        <div class="d-flex justify-content-around ">
+            <p class="mb-2">Subtotal</p>
+            <p class="mb-2">$4798.00</p>
+        </div>
+
+        <div class="d-flex justify-content-around">
+            <p class="mb-2">Shipping</p>
+            <p class="mb-2">$20.00</p>
+        </div>
+
+        <div class="d-flex justify-content-around mb-4">
+            <p class="mb-2">Total(Incl. taxes)</p>
+            <p class="mb-2">$4818.00</p>
+        </div>
+        <div class=" text-center pb-3">
+            <button type="button" class="btn btn-outline-success  btn-lg w-50">
+
+                Checkout
+            </button>
+
+        </div>
+    </div>
+
+</div>
+
+    -->

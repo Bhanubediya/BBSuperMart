@@ -1,7 +1,8 @@
-﻿using BBSuperMart.Data;
+﻿using BBMartUtility;
+using BBSuperMart.Data;
 using BBSuperMart.Models;
 using BBSuperMart.Models.ViewModels;
-using BBSuperMart.Utility;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -33,31 +34,40 @@ namespace BBSuperMart.Controllers
             return View(homeVM);
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+        
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
+        // GET - details
         public IActionResult details(int ProductId)
         {
+            //for shopping cart
             List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
             if (HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WC.SessionCart) != null
                 && HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WC.SessionCart).Count() > 0)
             {
                 shoppingCartList = HttpContext.Session.Get<List<ShoppingCart>>(WC.SessionCart);
             }
-
-            DetailsVM detailsVM= new DetailsVM()
+            List<WishListCart> WishListCartList = new List<WishListCart>();
+            if (HttpContext.Session.Get<IEnumerable<WishListCart>>(WC.SessionWishlistCart) != null
+                && HttpContext.Session.Get<IEnumerable<WishListCart>>(WC.SessionWishlistCart).Count() > 0)
+            {
+                WishListCartList = HttpContext.Session.Get<List<WishListCart>>(WC.SessionWishlistCart);
+            }
+            DetailsVM detailsVM = new DetailsVM()
             {
                 Products = _hdb.Products.Include(u => u.Category).Where(u => u.ProductId == ProductId).FirstOrDefault(),
-                ExistsInCart = false
+                ExistsInCart = false,
+                ExistsInWishlist=false
+
             };
+
+
+            foreach (var item in WishListCartList)
+            {
+                if (item.ProductId == ProductId)
+                {
+                    detailsVM.ExistsInWishlist = true;
+                }
+            }
 
 
             foreach (var item in shoppingCartList)
@@ -65,26 +75,15 @@ namespace BBSuperMart.Controllers
                 if (item.ProductId == ProductId)
                 {
                     detailsVM.ExistsInCart = true;
+
                 }
             }
+        
             return View(detailsVM);
         }
 
-        [HttpPost,ActionName("Details")]
-        public IActionResult detailsPost(int ProductId)
-        {
-            List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
-            if (HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WC.SessionCart)!=null
-                && HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WC.SessionCart).Count()>0)
-            {
-                shoppingCartList = HttpContext.Session.Get<List<ShoppingCart>>(WC.SessionCart);
-            }
-            shoppingCartList.Add(new ShoppingCart { ProductId = ProductId });
-            HttpContext.Session.Set(WC.SessionCart, shoppingCartList);
-            return RedirectToAction(nameof(Index));
-        }
-
-        public IActionResult removeFromCart(int ProductId)
+        [HttpPost, ActionName("Details")]
+        public IActionResult detailsPost(int Id)
         {
             List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
             if (HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WC.SessionCart) != null
@@ -92,7 +91,35 @@ namespace BBSuperMart.Controllers
             {
                 shoppingCartList = HttpContext.Session.Get<List<ShoppingCart>>(WC.SessionCart);
             }
-            var itemToRemove = shoppingCartList.SingleOrDefault(r => r.ProductId == ProductId);
+          
+            List<WishListCart> WishListCartList = new List<WishListCart>();
+            if (HttpContext.Session.Get<IEnumerable<WishListCart>>(WC.SessionWishlistCart) != null
+                && HttpContext.Session.Get<IEnumerable<WishListCart>>(WC.SessionWishlistCart).Count() > 0)
+            {
+                WishListCartList = HttpContext.Session.Get<List<WishListCart>>(WC.SessionWishlistCart);
+            }
+
+            shoppingCartList.Add(new ShoppingCart { ProductId = Id });
+            HttpContext.Session.Set(WC.SessionCart, shoppingCartList);
+            //Change
+            var itemToRemove = WishListCartList.SingleOrDefault(r => r.ProductId == Id);
+            if (itemToRemove != null)
+            {
+                WishListCartList.Remove(itemToRemove);
+            }
+            HttpContext.Session.Set(WC.SessionWishlistCart, WishListCartList);
+            return RedirectToAction("Index","Home");
+        }
+
+        public IActionResult removeFromCart(int Id)
+        {
+            List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
+            if (HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WC.SessionCart) != null
+                && HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WC.SessionCart).Count() > 0)
+            {
+                shoppingCartList = HttpContext.Session.Get<List<ShoppingCart>>(WC.SessionCart);
+            }
+            var itemToRemove = shoppingCartList.SingleOrDefault(r => r.ProductId == Id);
             if (itemToRemove != null)
             {
                 shoppingCartList.Remove(itemToRemove);
@@ -100,5 +127,48 @@ namespace BBSuperMart.Controllers
             HttpContext.Session.Set(WC.SessionCart, shoppingCartList);
             return RedirectToAction(nameof(Index));
         }
+
+       
+
+        //POST - Wishlist
+
+        [HttpPost, ActionName("DetailsWishList")]
+        public IActionResult detailsWishPost(int ProductId)
+        {
+            List<WishListCart> WishListCartList = new List<WishListCart>();
+            if (HttpContext.Session.Get<IEnumerable<WishListCart>>(WC.SessionWishlistCart) != null
+                && HttpContext.Session.Get<IEnumerable<WishListCart>>(WC.SessionWishlistCart).Count() > 0)
+            {
+                WishListCartList = HttpContext.Session.Get<List<WishListCart>>(WC.SessionWishlistCart);
+            }
+            WishListCartList.Add(new WishListCart { ProductId = ProductId });
+            HttpContext.Session.Set(WC.SessionWishlistCart, WishListCartList);
+           
+            return RedirectToAction(nameof(Index));
+        }
+
+//Delete- WishList
+        public IActionResult removeWishlist(int Id)
+        {
+            List<WishListCart> WishListCartList = new List<WishListCart>();
+            if (HttpContext.Session.Get<IEnumerable<WishListCart>>(WC.SessionWishlistCart) != null
+                && HttpContext.Session.Get<IEnumerable<WishListCart>>(WC.SessionWishlistCart).Count() > 0)
+            {
+                WishListCartList = HttpContext.Session.Get<List<WishListCart>>(WC.SessionWishlistCart);
+            }
+            var itemToRemove = WishListCartList.FirstOrDefault(r => r.ProductId == Id);
+            if (itemToRemove != null)
+            {
+                WishListCartList.Remove(itemToRemove);
+            }
+            HttpContext.Session.Set(WC.SessionWishlistCart, WishListCartList);
+            return RedirectToAction(nameof(Index));
+        }
+
+
+        //decrease button
+
+       
+
     }
 }

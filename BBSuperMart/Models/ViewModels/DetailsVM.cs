@@ -13,5 +13,7 @@ namespace BBSuperMart.Models.ViewModels
         }
         public Products Products { get; set; }
         public bool ExistsInCart { get; set; }
+
+        public bool ExistsInWishlist { get; set; }
     }
 }

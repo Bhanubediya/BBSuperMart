@@ -19,34 +19,39 @@
         </a>
     </div>
 
-    <div class="text-center text-black-50 pt-4">
+    <div class="text-center text-black-50 pt-4 pb-3" style="background: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%); ">
         <span style="cursor:pointer"> <i class="fa-solid fa-arrow-down-a-z"></i> price</span>
         <span style="cursor:pointer" class="pl-5"><i class="fa-solid fa-arrow-up-a-z"></i> price</span>
         <span style="cursor:pointer" class="pl-5">  <i class="fa-solid fa-filter"></i> categories</span>
 
     </div>
-
-    <div class="d-inline-flex  overflow-hidden">
-        <div id="sideBar " class=" mr-5 ">
-            <ul class="list-group-flush  mx-4 " style="list-style:none; ">
-                <li class=" pt-3"><button class="btn btn-dark filter-button   " data-filter="all">Categories</button></li>
-                @foreach (var obj in Model.Categories)
-                {
-                    <li class=" pt-3 "><button class="btn btn-outline-success filter-button   " data-filter="@obj.CatName.Replace(' ','_')">@obj.CatName </button></li>
-                    @*<li class=" pt-3 filter-button"><a class="  pt-3 pb-3 " data-filter="@obj.CatName.Replace(' ','_')"> <img class="categs " src="@obj.CatImageIcon" /></a></li>*@
-                }
-            </ul>
-        </div>
-
-
-        <div class="row mt-5">
-
-            @foreach (var prod in Model.Products)
+    <div class="  text-center ">
+        <ul class="list-group-flush d-inline-flex mx-4 " style="list-style:none; ">
+            <li class=" pt-3 mr-2"><button class="btn btn-dark filter-button   " data-filter="all">Categories</button></li>
+            @foreach (var obj in Model.Categories)
             {
-                <partial name="_ProductsCards" model="prod" />
+                <li class=" pt-3 mr-2"><button class="btn btn-outline-warning filter-button   " data-filter="@obj.CatName.Replace(' ','_')">@obj.CatName </button></li>
+               
             }
-        </div>
+        </ul>
     </div>
+
+    <div class="overflow-hidden ">
+       
+        
+
+        
+            <div class="row mt-5 ml-4">
+
+
+                @foreach (var prod in Model.Products)
+                {
+
+                    <partial name="_ProductsCards" model="prod" />
+                }
+            </div>
+        </div>
+  
 
     @section Scripts{
         <script>

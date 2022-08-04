@@ -1,0 +1,12 @@
+C:\Users\Bhanu\Source\Repos\BBSuperMart\BBMartUtility\obj\Debug\net5.0\BBMartUtility.csproj.AssemblyReference.cache
+C:\Users\Bhanu\Source\Repos\BBSuperMart\BBMartUtility\obj\Debug\net5.0\BBMartUtility.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Bhanu\Source\Repos\BBSuperMart\BBMartUtility\obj\Debug\net5.0\BBMartUtility.AssemblyInfoInputs.cache
+C:\Users\Bhanu\Source\Repos\BBSuperMart\BBMartUtility\obj\Debug\net5.0\BBMartUtility.AssemblyInfo.cs
+C:\Users\Bhanu\Source\Repos\BBSuperMart\BBMartUtility\obj\Debug\net5.0\BBMartUtility.csproj.CoreCompileInputs.cache
+C:\Users\Bhanu\Source\Repos\BBSuperMart\BBMartUtility\bin\Debug\net5.0\BBMartUtility.deps.json
+C:\Users\Bhanu\Source\Repos\BBSuperMart\BBMartUtility\bin\Debug\net5.0\BBMartUtility.dll
+C:\Users\Bhanu\Source\Repos\BBSuperMart\BBMartUtility\bin\Debug\net5.0\ref\BBMartUtility.dll
+C:\Users\Bhanu\Source\Repos\BBSuperMart\BBMartUtility\bin\Debug\net5.0\BBMartUtility.pdb
+C:\Users\Bhanu\Source\Repos\BBSuperMart\BBMartUtility\obj\Debug\net5.0\BBMartUtility.dll
+C:\Users\Bhanu\Source\Repos\BBSuperMart\BBMartUtility\obj\Debug\net5.0\ref\BBMartUtility.dll
+C:\Users\Bhanu\Source\Repos\BBSuperMart\BBMartUtility\obj\Debug\net5.0\BBMartUtility.pdb

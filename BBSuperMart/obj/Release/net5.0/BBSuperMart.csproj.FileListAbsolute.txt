@@ -1,0 +1,8 @@
+C:\Users\Bhanu\Source\Repos\BBSuperMart\BBSuperMart\obj\Release\net5.0\BBSuperMart.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Bhanu\Source\Repos\BBSuperMart\BBSuperMart\obj\Release\net5.0\BBSuperMart.AssemblyInfoInputs.cache
+C:\Users\Bhanu\Source\Repos\BBSuperMart\BBSuperMart\obj\Release\net5.0\BBSuperMart.AssemblyInfo.cs
+C:\Users\Bhanu\Source\Repos\BBSuperMart\BBSuperMart\obj\Release\net5.0\BBSuperMart.csproj.CoreCompileInputs.cache
+C:\Users\Bhanu\Source\Repos\BBSuperMart\BBSuperMart\obj\Release\net5.0\BBSuperMart.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Bhanu\Source\Repos\BBSuperMart\BBSuperMart\obj\Release\net5.0\BBSuperMart.RazorAssemblyInfo.cache
+C:\Users\Bhanu\Source\Repos\BBSuperMart\BBSuperMart\obj\Release\net5.0\BBSuperMart.RazorAssemblyInfo.cs
+C:\Users\Bhanu\Source\Repos\BBSuperMart\BBSuperMart\obj\Release\net5.0\BBSuperMart.csproj.AssemblyReference.cache

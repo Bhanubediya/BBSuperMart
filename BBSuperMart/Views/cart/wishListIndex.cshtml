@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Products>
+
+
+
+@if (Model.Count() > 0)
+{
+    <div class="container-fluid border box-shadow pt-3 pb-3 text-center pl-5 " style="border-radius:1em">
+        <form method="post">
+            @foreach (var Model in Model)
+            {
+
+                <div class=" d-inline-flex ">
+                    <input asp-for="@Model.ProductId" hidden />
+
+                    <div class="card mb-2 badge-warning mr-5 change " id="card" style="width: 16.7rem; cursor: pointer;  background: rgba(230, 222, 164, 1.0); background: -webkit-linear-gradient(top left, rgba(230, 222, 164, 1.0), rgba(236, 235, 229, 1.0)); background: -moz-linear-gradient(top left, rgba(230, 222, 164, 1.0), rgba(236, 235, 229, 1.0)); background: linear-gradient(to bottom right, rgba(230, 222, 164, 1.0), rgba(236, 235, 229, 1.0)); ">
+                        <a asp-action="details" asp-route-ProductId="@Model.ProductId" class="text-decoration-none">
+                            <div class="text-center pt-3 "><img src="@Model.image" class="card-img-top w-50 " alt="..."></div>
+                            <div class="card-body ">
+                                <div class="text-center pb-2"> <strong class="card-title text-dark">@Model.title</strong></div>
+                                <div class="text-left pl-2 card-title text-black-50">
+                                    <span style="padding-right:1em"><strong class="text-dark ">₹</strong><span class="text-dark text-right">@Model.price</span></span>
+
+                                </div>
+
+                                <hr />
+                                <p class="text-center text-decoration-none text-secondary"> @Model.quan_grams</p>
+                            </div>
+
+                        </a>
+
+                        <div class="text-center pb-3">
+
+
+                            @*<a class="btn btn-outline-success  " asp-route-ProductId="@Model.ProductId" asp-controller="Home" asp-action="detailsPost"><span><i class="fa-solid fa-cart-plus "></i> Add</span></a>*@
+                            <button type="submit" class="btn btn-outline-danger form-control w-25" asp-route-Id="@Model.ProductId" asp-controller="Home" asp-action="removeWishlist" style="cursor:pointer"> <span style="font-size:small;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">Drop</span></button>
+                            <button type="submit" class="btn btn-outline-success form-control w-25" asp-route-Id="@Model.ProductId" asp-controller="Home" asp-action="Details" style="cursor:pointer"> <span style="font-size:medium;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">Add</span></button>
+                        </div>
+                    </div>
+                </div>
+
+            }
+        </form>
+    </div>
+}
+
+else
+{
+    <div class="container text-center border box-shadow h-100 pb-5 pt-5">
+        <p>Oop's! no products added.</p>
+        <div>
+            <a asp-controller="Home" asp-action="Index">
+                <button class="btn btn-warning text-white">Shop now</button>
+            </a>
+        </div>
+    </div>
+}

@@ -1,5 +1,7 @@
-﻿using BBSuperMart.Data;
+﻿using BBMartUtility;
+using BBSuperMart.Data;
 using BBSuperMart.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -8,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace BBSuperMart.Controllers
 {
+    [Authorize(Roles = WC.CustomerRole)]
     public class CategoryController : Controller
     {
         private readonly BBSuperMarketDbContext _db;

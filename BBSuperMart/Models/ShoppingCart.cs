@@ -8,5 +8,7 @@ namespace BBSuperMart.Models
     public class ShoppingCart
     {
         public int ProductId { get; set; }
+
+        public int quantity { get; set; }
     }
 }
